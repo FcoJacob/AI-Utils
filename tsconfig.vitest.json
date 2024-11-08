@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.app.json",
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.json", "tests/**/*"],
+  "exclude": [],
+  "compilerOptions": {
+    "lib": [],
+    "types": ["jsdom", "jest", "@testing-library/jest-dom"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@tests/*": ["./tests/*"]
+    }
+  }
+}
