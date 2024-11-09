@@ -1,0 +1,23 @@
+import introImage from './intro_image.png'
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Welcome/Intro" />
+
+export const image = {
+  src: introImage,
+  alt: 'my image'
+}
+
+<div style={{ display: 'flex'}}>
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
+    <h1 style={{ textAlign: 'start' }}> 👋 Welcome to AI Utils</h1>
+    <p style={{ fontSize: '1.1rem' }}>🤖 Hello! If you are here, you probably need to use some of our components.</p>
+    <div>
+        ## What is AI Utils?
+        <p>AI Utils is a utility library that helps implement artificial intelligence solutions.</p>
+        <p>This proyect has a The structure and categorization for organizing the components we use in the storybook, which groups its components into categories based on their functionality. This approach promotes modular and scalable design, making it easier to maintain consistency and reusability throughout a project.</p>
+        For more information, you can consult the [official page](https://google.es)
+    </div>
+  </div>
+  <img src={introImage} alt="Welcome to sima suite component" width="550" />
+</div>

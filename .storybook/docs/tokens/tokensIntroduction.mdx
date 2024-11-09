@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/blocks'
+import introImage from './FigmaDesignTokens.png'
+
+<Meta title="Design Tokens/What are they" />
+
+export const image = {
+  src: introImage,
+  alt: 'FigmaDesignTokens'
+}
+
+### What is a Design token ?
+
+Design token is an extremely versatile way to share design properties.
+They are the visual elements of the layout system. We use them instead of 'hardcoded' values ​​to maintain a consistent and scalable visual system.
+It is centralized data, almost like a database of design values.
+
+Inside Figma application we have [PROD-DESIGN-TOKENS](https://www.figma.com/file/t3CZe6msXR1uIhiEv67Iql/PROD-DESIGN-TOKENS?node-id=0%3A1) view connected
+with [Figma's api](https://aidacanarias.visualstudio.com/CrossCutting%20and%20Innovation/_git/sima-suite-figma) in order to download tokens.
+To apply any change inside tokens we must do it in figma application. Next from simasuite-components repository we need to execute _npm run tokens_ to update tokens files and push them to the repository.
+For more [information](https://www.uifrommars.com/design-tokens-que-son-ventajas/).
+
+<img src={image.src} alt={image.alt} />

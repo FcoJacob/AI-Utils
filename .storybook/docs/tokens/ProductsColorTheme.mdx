@@ -1,0 +1,103 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Design Tokens/Product theme configuration" />
+
+### How to set up the color theme on a product?
+
+- First, you need to create a JSON file with the product name, for example, product-theme.schema.json, with the following structure:
+
+```json
+{
+  "color": {
+    "primary": {
+      "50": "",
+      "100": "",
+      "150": "",
+      "200": "",
+      "300": "",
+      "400": "",
+      "500": "",
+      "600": "",
+      "700": "",
+      "800": "",
+      "850": "",
+      "900": "",
+      "950": "",
+    },
+    "secondary": {
+      "50": "",
+      "100": "",
+      "150": "",
+      "200": "",
+      "300": "",
+      "400": "",
+      "500": "",
+      "600": "",
+      "700": "",
+      "800": "",
+      "850": "",
+      "900": "",
+      "950": "",
+    },
+    "terciary": {
+      "50": "",
+      "100": "",
+      "150": "",
+      "200": "",
+      "300": "",
+      "400": "",
+      "500": "",
+      "600": "",
+      "700": "",
+      "800": "",
+      "850": "",
+      "900": "",
+      "950": "",
+    },
+    "error": {
+      "400": "",
+      "500": "",
+      "600": "",
+    },
+    "warning": {
+      "400": "",
+      "500": "",
+      "600": "",
+    },
+    "success": {
+      "400": "",
+      "500": "",
+      "600": "",
+    },
+    "info": {
+      "400": "",
+      "500": "",
+      "600": "",
+    },
+    "neutral":{
+      "50": "",
+      "100": "",
+      "150": "",
+      "200": "",
+      "250": "",
+      "300": "",
+      "400": "",
+      "450": "",
+      "500": "",
+    },
+    "white": "",
+  }
+}
+```
+⚠️ **You only need to fill in the fields that will be used in the product, if you don't use a color, you must remove it from the JSON.**
+
+- Fill in the values of each field with the corresponding color tokens for the product.
+- Next, you need to import the JSON file into the `main.ts` file of the product and add it to the `configureSimaSuiteComponents` function.
+
+```javascript
+import ProductTheme from './product-theme.schema.json'
+
+configureSimaSuiteComponents(app, ProductTheme)
+```
+
+- This will overwrite the default color tokens of the component library with the product's values.

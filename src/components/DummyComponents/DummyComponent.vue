@@ -1,11 +1,16 @@
 <script setup lang="ts">
-defineProps<{
-  pepe?: string
-}>()
+interface DummyComponentProps {
+  /**
+   * The text to display
+   */
+  text?: string
+}
+
+defineProps<DummyComponentProps>()
 </script>
 
 <template>
-  <div class="text-lg font-bold">Hola, Dummy!</div>
+  <div class="text-lg font-bold">Hola, Dummy! {{ text }}</div>
 </template>
 
 <style scoped></style>
