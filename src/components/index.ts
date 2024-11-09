@@ -1,3 +1,3 @@
-import DummyComponent from './DummyComponents/DummyComponent.vue'
+import HelperBot from './HelperBot/HelperBot.vue'
 
-export { DummyComponent }
+export { HelperBot }
