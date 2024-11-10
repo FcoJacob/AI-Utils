@@ -28,7 +28,8 @@ export const Default: Story = {
     setup() {
       return { args }
     },
-    template: '<helper-bot v-bind="args" />',
+    template:
+      '<helper-bot v-bind="args"><template #avatar><div class="w-full h-full bg-slate-200 rounded-full text-black flex justify-center items-center">IS</div></template></helper-bot>',
   }),
   args: {},
 }

@@ -146,7 +146,7 @@ const reverseOrderMessages = computed(() => {
         </div>
       </div>
       <div class="flex gap-4">
-        <div v-if="withAvatar" class="w-12 aspect-square bg-amber-100">
+        <div v-if="withAvatar" class="w-12 aspect-square">
           <slot name="avatar" />
         </div>
         <div class="flex flex-col justify-center items-start flex-grow gap-0">
