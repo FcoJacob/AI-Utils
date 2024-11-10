@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
 import SvgIcon from '@jamescoyle/vue-icon'
 import { mdiClose, mdiSend } from '@mdi/js'
 import FloatButton from './components/FloatButton.vue'
@@ -7,7 +9,7 @@ import BenderImage from './components/icons/BenderImage.vue'
 import SpeechBubble from './components/SpeechBubble.vue'
 import { type Message, MessageType } from './components/types'
 
-interface HelperBotProps {
+type HelperBotProps = {
   titleBot?: string
   titleProduct?: string
   chatId?: string
@@ -22,7 +24,7 @@ const props = withDefaults(defineProps<HelperBotProps>(), {
   chatId: '123456',
   withAvatar: true,
   withCloseButton: true,
-  messages: [
+  messages: () => [
     {
       id: 1,
       sender: MessageType.System,
