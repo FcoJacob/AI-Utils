@@ -1,6 +1,6 @@
 {
   "name": "ai-utils",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "main": "./dist/ai-utils.umd.js",
   "module": "./dist/ai-utils.es.js",

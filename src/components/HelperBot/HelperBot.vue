@@ -10,100 +10,38 @@ import SpeechBubble from './components/SpeechBubble.vue'
 import { type Message, MessageType } from './components/types'
 
 type HelperBotProps = {
+  /**
+   * Title of the bot, how the want to be called
+   */
   titleBot?: string
+  /**
+   * Title of the product that the bot is helping with
+   */
   titleProduct?: string
-  chatId?: string
+  /**
+   * Chat ID of the conversation
+   */
+  chatId?: number
+  /**
+   * If the chat has a close button
+   */
   withCloseButton?: boolean
+  /**
+   * If the chat has an avatar
+   */
   withAvatar?: boolean
-  messages?: Message[]
+  /**
+   * Messages of the chat
+   */
+  messages: Message[]
 }
 
 const props = withDefaults(defineProps<HelperBotProps>(), {
   titleBot: 'Helper AI',
   titleProduct: 'Product Name',
-  chatId: '123456',
+  chatId: 123456,
   withAvatar: true,
   withCloseButton: true,
-  messages: () => [
-    {
-      id: 1,
-      sender: MessageType.System,
-      name: 'Helper AI',
-      text: 'Hello, how can I help you?',
-      timestamp: new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }),
-    },
-    {
-      id: 2,
-      sender: MessageType.User,
-      name: 'User',
-      text: 'I need help with my order',
-      timestamp: new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }),
-    },
-    {
-      id: 3,
-      sender: MessageType.System,
-      name: 'Helper AI',
-      text: 'Sure, what is your order number?',
-      timestamp: new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }),
-    },
-    {
-      id: 4,
-      sender: MessageType.System,
-      name: 'Helper AI',
-      text: 'Sure, what is your order number?',
-      timestamp: new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }),
-    },
-    {
-      id: 5,
-      sender: MessageType.System,
-      name: 'Helper AI',
-      text: 'Sure, what is your order number?',
-      timestamp: new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }),
-    },
-    {
-      id: 6,
-      sender: MessageType.User,
-      name: 'User',
-      text: 'Sure, what is your order number? pcvsdbsd sd pjbsdv ipj sdvv sdvb pb sdvp vasdpb pvsd ipsdfv',
-      timestamp: new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }),
-    },
-    {
-      id: 7,
-      sender: MessageType.System,
-      name: 'Helper AI',
-      text: 'Sure, what is your order number?',
-      timestamp: new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }),
-      loading: true,
-    },
-  ],
 })
 
 const emit = defineEmits<{
