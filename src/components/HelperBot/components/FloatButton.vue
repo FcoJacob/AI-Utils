@@ -5,13 +5,17 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <button class="chat-icon" aria-label="Button for open/close the chat bot" @click="emit('click')">
+  <button
+    class="ai-chat-icon"
+    aria-label="Button for open/close the chat bot"
+    @click="emit('click')"
+  >
     <slot />
   </button>
 </template>
 
 <style scoped>
-.chat-icon {
-  @apply fixed bottom-4 right-4 w-12 h-12 bg-blue-500 rounded-full flex justify-center items-center cursor-pointer shadow-md;
+.ai-chat-icon {
+  @apply ai-fixed ai-bottom-4 ai-right-4 ai-w-12 ai-h-12 ai-bg-blue-500 ai-rounded-full ai-flex ai-justify-center ai-items-center ai-cursor-pointer ai-shadow-md;
 }
 </style>

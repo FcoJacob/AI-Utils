@@ -9,28 +9,28 @@ defineProps<SpeechBlueProps>()
 </script>
 
 <template>
-  <div class="flex flex-col gap-1">
+  <div class="ai-flex ai-flex-col ai-gap-1">
     <div
-      class="uppercase font-semibold text-sm"
+      class="ai-uppercase ai-font-semibold ai-text-sm"
       :class="{
-        'self-end mr-2': message.sender === MessageType.User,
-        'self-start ml-2': message.sender === MessageType.System,
+        'ai-self-end ai-mr-2': message.sender === MessageType.User,
+        'ai-self-start ai-ml-2': message.sender === MessageType.System,
       }"
     >
       {{ message.name }}
     </div>
     <div
-      class="speech-bubble"
+      class="ai-speech-bubble"
       :class="{
-        'speech-bubble-user': message.sender === MessageType.User,
-        'speech-bubble-system': message.sender === MessageType.System,
+        'ai-speech-bubble-user': message.sender === MessageType.User,
+        'ai-speech-bubble-system': message.sender === MessageType.System,
       }"
     >
       <template v-if="message.loading">
-        <div class="flex justify-center items-center gap-1 px-1 py-1.5">
-          <div class="bg-blue-500 h-1.5 w-1.5 rounded-full animate-fade-1"></div>
-          <div class="bg-blue-500 h-1.5 w-1.5 rounded-full animate-fade-2"></div>
-          <div class="bg-blue-500 h-1.5 w-1.5 rounded-full animate-fade-3"></div>
+        <div class="ai-flex ai-justify-center ai-items-center ai-gap-1 ai-px-1 ai-py-1.5">
+          <div class="ai-bg-blue-500 ai-h-1.5 ai-w-1.5 ai-rounded-full ai-animate-fade-1"></div>
+          <div class="ai-bg-blue-500 ai-h-1.5 ai-w-1.5 ai-rounded-full ai-animate-fade-2"></div>
+          <div class="ai-bg-blue-500 ai-h-1.5 ai-w-1.5 ai-rounded-full ai-animate-fade-3"></div>
         </div>
       </template>
       <template v-else>
@@ -38,10 +38,10 @@ defineProps<SpeechBlueProps>()
       </template>
     </div>
     <small
-      class="text-gray-400 font-semibold"
+      class="ai-text-gray-400 ai-font-semibold"
       :class="{
-        'self-end mr-2': message.sender === MessageType.User,
-        'self-start ml-2': message.sender === MessageType.System,
+        'ai-self-end ai-mr-2': message.sender === MessageType.User,
+        'ai-self-start ai-ml-2': message.sender === MessageType.System,
       }"
     >
       {{ message.timestamp }}
@@ -50,8 +50,8 @@ defineProps<SpeechBlueProps>()
 </template>
 
 <style scoped>
-.speech-bubble {
-  @apply w-fit bg-slate-200 py-2.5 px-3 rounded-lg shadow-sm relative text-sm;
+.ai-speech-bubble {
+  @apply ai-w-fit ai-bg-slate-200 ai-py-2.5 ai-px-3 ai-rounded-lg ai-shadow-sm ai-relative ai-text-sm;
 }
 
 /* Punta para el mensaje del usuario */

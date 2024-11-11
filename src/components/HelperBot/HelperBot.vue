@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import SvgIcon from '@jamescoyle/vue-icon'
@@ -8,6 +8,7 @@ import FloatButton from './components/FloatButton.vue'
 import BenderImage from './components/icons/BenderImage.vue'
 import SpeechBubble from './components/SpeechBubble.vue'
 import { type Message, MessageType } from './components/types'
+import { initConnectionBot } from '@/index'
 
 type HelperBotProps = {
   /**
@@ -57,12 +58,21 @@ const openChat = () => {
 const message = ref('')
 
 const sendMessage = () => {
+  // Hacer las llamadas directamente con connection.send('nombre del evento del socket', parametros)
   emit('sendMessage', message.value)
   message.value = ''
 }
 
 const reverseOrderMessages = computed(() => {
   return props.messages.slice().reverse()
+})
+
+// connection.on('ReceiveMessage', (message: Message) => {
+//   props.messages.push(message)
+// })
+
+onBeforeMount(() => {
+  initConnectionBot()
 })
 </script>
 
@@ -74,57 +84,57 @@ const reverseOrderMessages = computed(() => {
     v-if="isChatOpen"
     role="dialog"
     aria-label="Dialog with bot of helper"
-    class="fixed bottom-4 right-20 rounded-3xl overflow-hidden flex flex-col justify-start w-[400px] shadow-lg"
+    class="ai-bg-white ai-fixed ai-bottom-4 ai-right-20 ai-rounded-3xl ai-overflow-hidden ai-flex ai-flex-col ai-justify-start ai-w-[400px] ai-shadow-lg"
   >
-    <header class="bg-indigo-950 p-8 w-full text-white flex flex-col gap-4">
-      <div class="w-full grid grid-cols-8">
-        <h2 class="text-lg font-semibold col-span-7">{{ titleBot }}</h2>
-        <div class="col-span-1 flex justify-end">
+    <header class="ai-bg-indigo-950 ai-p-8 ai-w-full ai-text-white ai-flex ai-flex-col ai-gap-4">
+      <div class="ai-w-full ai-grid ai-grid-cols-8">
+        <h2 class="ai-text-lg ai-font-semibold ai-col-span-7">{{ titleBot }}</h2>
+        <div class="ai-col-span-1 ai-flex ai-justify-end">
           <button v-if="withCloseButton" aria-label="Close chat button" @click="isChatOpen = false">
             <svg-icon type="mdi" :path="mdiClose" />
           </button>
         </div>
       </div>
-      <div class="flex gap-4">
-        <div v-if="withAvatar" class="w-12 aspect-square">
+      <div class="ai-flex ai-gap-4">
+        <div v-if="withAvatar" class="ai-w-12 ai-aspect-square">
           <slot name="avatar" />
         </div>
-        <div class="flex flex-col justify-center items-start flex-grow gap-0">
-          <h4 class="font-semibold text-lg">{{ titleProduct }}</h4>
-          <small class="font-semibold">
-            CHAT ID: <span class="text-blue-300 cursor-copy">{{ chatId }}</span>
+        <div class="ai-flex ai-flex-col ai-justify-center ai-items-start ai-flex-grow ai-gap-0">
+          <h4 class="ai-font-semibold ai-text-lg">{{ titleProduct }}</h4>
+          <small class="ai-font-semibold">
+            CHAT ID: <span class="ai-text-blue-300 ai-cursor-copy">{{ chatId }}</span>
           </small>
         </div>
       </div>
     </header>
     <main
-      class="chat-main w-full h-96 flex flex-col-reverse gap-4 overflow-y-auto overflow-x-hidden pl-6 pr-2 py-6"
+      class="ai-chat-main ai-w-full ai-h-96 ai-flex ai-flex-col-reverse ai-gap-4 ai-overflow-y-auto ai-overflow-x-hidden ai-pl-6 ai-pr-2 ai-py-6"
     >
       <template v-for="message in reverseOrderMessages" :key="message.id">
         <speech-bubble
           :class="{
-            'self-end': message.sender === MessageType.User,
-            'self-start': message.sender === MessageType.System,
+            'ai-self-end': message.sender === MessageType.User,
+            'ai-self-start': message.sender === MessageType.System,
           }"
           :message="message"
         />
       </template>
     </main>
-    <footer class="w-full p-6 flex gap-2 border-t border-solid">
+    <footer class="ai-w-full ai-p-6 ai-flex ai-gap-2 ai-border-t ai-border-solid">
       <input
         type="text"
         aria-label="Enter your question for the bot"
         placeholder="Message ..."
-        class="flex-grow p-2 border border-gray-300 rounded-md bg-gray-50"
+        class="ai-flex-grow ai-p-2 ai-border ai-border-gray-300 ai-rounded-md ai-bg-gray-50"
         v-model="message"
         @keyup.enter="sendMessage"
       />
       <button
         aria-label="Send message button"
-        class="w-10 border border-gray-300 rounded-md flex justify-center items-center p-2"
+        class="ai-w-10 ai-border ai-border-gray-300 ai-rounded-md ai-flex ai-justify-center ai-items-center ai-p-2"
         @click="sendMessage"
       >
-        <svg-icon type="mdi" :path="mdiSend" class="text-blue-400" />
+        <svg-icon type="mdi" :path="mdiSend" class="ai-text-blue-400" />
       </button>
     </footer>
   </div>

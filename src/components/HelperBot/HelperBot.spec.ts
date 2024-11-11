@@ -2,15 +2,97 @@ import { it, expect } from 'vitest'
 import { render, screen } from '@testing-library/vue'
 import HelperBot from './HelperBot.vue'
 import { userEvent } from '@testing-library/user-event'
+import { MessageType } from './components/types'
+
+const messages = [
+  {
+    id: 1,
+    sender: MessageType.System,
+    name: 'Helper AI',
+    text: 'Hello, how can I help you?',
+    timestamp: new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+  },
+  {
+    id: 2,
+    sender: MessageType.User,
+    name: 'User',
+    text: 'I need help with my order',
+    timestamp: new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+  },
+  {
+    id: 3,
+    sender: MessageType.System,
+    name: 'Helper AI',
+    text: 'Sure, what is your order number?',
+    timestamp: new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+  },
+  {
+    id: 4,
+    sender: MessageType.System,
+    name: 'Helper AI',
+    text: 'Sure, what is your order number?',
+    timestamp: new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+  },
+  {
+    id: 5,
+    sender: MessageType.System,
+    name: 'Helper AI',
+    text: 'Sure, what is your order number?',
+    timestamp: new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+  },
+  {
+    id: 6,
+    sender: MessageType.User,
+    name: 'User',
+    text: 'Sure, what is your order number? pcvsdbsd sd pjbsdv ipj sdvv sdvb pb sdvp vasdpb pvsd ipsdfv',
+    timestamp: new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+  },
+  {
+    id: 7,
+    sender: MessageType.System,
+    name: 'Helper AI',
+    text: 'Sure, what is your order number?',
+    timestamp: new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+    loading: true,
+  },
+]
 
 it('should render the HelperBot component', () => {
-  render(HelperBot)
+  render(HelperBot, { props: { messages } })
 
   expect(screen.getByRole('button', { name: 'Button for open/close the chat bot' })).toBeVisible()
 })
 
 it('should show a title for the chat', async () => {
-  render(HelperBot, { props: { titleBot: 'Chat with me' } })
+  render(HelperBot, { props: { titleBot: 'Chat with me', messages } })
 
   await openChatBot()
 
@@ -18,7 +100,7 @@ it('should show a title for the chat', async () => {
 })
 
 it('should show a icon for closed the chat bot', async () => {
-  render(HelperBot)
+  render(HelperBot, { props: { messages } })
 
   await openChatBot()
 
@@ -26,7 +108,7 @@ it('should show a icon for closed the chat bot', async () => {
 })
 
 it('should close dialog when click on close button', async () => {
-  render(HelperBot)
+  render(HelperBot, { props: { messages } })
   await openChatBot()
 
   await clickButtonClose()
@@ -38,6 +120,7 @@ it('should close dialog when click on close button', async () => {
 
 it('should show a avatar logo for the chat bot', async () => {
   render(HelperBot, {
+    props: { messages },
     slots: { avatar: '<img src="" alt="Avatar logo for chat bot" />' },
   })
 
@@ -47,7 +130,7 @@ it('should show a avatar logo for the chat bot', async () => {
 })
 
 it('should show a title product for the chat bot', async () => {
-  render(HelperBot, { props: { titleProduct: 'Product name' } })
+  render(HelperBot, { props: { titleProduct: 'Product name', messages } })
 
   await openChatBot()
 
@@ -55,15 +138,15 @@ it('should show a title product for the chat bot', async () => {
 })
 
 it('should show a chat id for the chat bot', async () => {
-  render(HelperBot, { props: { chatId: 'chat-id' } })
+  render(HelperBot, { props: { chatId: 123456, messages } })
 
   await openChatBot()
 
-  expect(screen.getByText('chat-id')).toBeVisible()
+  expect(screen.getByText('123456')).toBeVisible()
 })
 
 it('should show a input for user type a message', async () => {
-  render(HelperBot)
+  render(HelperBot, { props: { messages } })
 
   await openChatBot()
 
@@ -71,7 +154,7 @@ it('should show a input for user type a message', async () => {
 })
 
 it('should emit a message when the user type a message and push enter button', async () => {
-  const { emitted } = render(HelperBot)
+  const { emitted } = render(HelperBot, { props: { messages } })
   await openChatBot()
   const input = await typeMessage('Hello, bot!')
 
@@ -81,7 +164,7 @@ it('should emit a message when the user type a message and push enter button', a
 })
 
 it('should emit a message when the user type a message and clicks to the send button', async () => {
-  const { emitted } = render(HelperBot)
+  const { emitted } = render(HelperBot, { props: { messages } })
   await openChatBot()
   await typeMessage('Hello, bot!')
 

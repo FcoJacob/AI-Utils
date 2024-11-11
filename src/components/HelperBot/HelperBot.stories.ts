@@ -43,7 +43,7 @@ export const Default: Story = {
         @send-message="sendMessage"
       >
         <template #avatar>
-          <div class="w-full h-full bg-slate-200 rounded-full text-black flex justify-center items-center">IS</div>
+          <div class="ai-w-full ai-h-full ai-bg-slate-200 ai-rounded-full ai-text-black ai-flex ai-justify-center ai-items-center">IS</div>
         </template>
       </helper-bot>`,
   }),

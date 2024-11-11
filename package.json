@@ -1,6 +1,6 @@
 {
   "name": "ai-utils",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "type": "module",
   "main": "./dist/ai-utils.umd.js",
   "module": "./dist/ai-utils.es.js",
@@ -84,5 +84,8 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "dependencies": {
+    "@microsoft/signalr": "^8.0.7"
   }
 }
