@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue'
+import { computed, onBeforeMount, onMounted, ref, reactive } from 'vue'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import SvgIcon from '@jamescoyle/vue-icon'
@@ -7,8 +7,7 @@ import { mdiClose, mdiSend } from '@mdi/js'
 import FloatButton from './components/FloatButton.vue'
 import BenderImage from './components/icons/BenderImage.vue'
 import SpeechBubble from './components/SpeechBubble.vue'
-import { type Message, MessageType } from './components/types'
-import { initConnectionBot } from '@/index'
+import { type InitChatResponse, type Message, Role } from './components/types'
 
 type HelperBotProps = {
   /**
@@ -31,13 +30,9 @@ type HelperBotProps = {
    * If the chat has an avatar
    */
   withAvatar?: boolean
-  /**
-   * Messages of the chat
-   */
-  messages: Message[]
 }
 
-const props = withDefaults(defineProps<HelperBotProps>(), {
+withDefaults(defineProps<HelperBotProps>(), {
   titleBot: 'Helper AI',
   titleProduct: 'Product Name',
   chatId: 123456,
@@ -55,24 +50,82 @@ const openChat = () => {
   isChatOpen.value = !isChatOpen.value
 }
 
-const message = ref('')
+const messagesHistory: Message[] = reactive([])
 
-const sendMessage = () => {
-  // Hacer las llamadas directamente con connection.send('nombre del evento del socket', parametros)
-  emit('sendMessage', message.value)
-  message.value = ''
+const messageUser = ref('')
+
+const sendMessage = async () => {
+  messagesHistory.push({
+    id: messagesHistory.length + 1,
+    sender: Role.User,
+    name: 'User',
+    text: messageUser.value,
+    timestamp: new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+  })
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/v1/chats/messages?chatId=${registryChat.guid}&userInput=${messageUser.value}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          guid: registryChat.guid,
+          message: messageUser.value,
+        }),
+      },
+    )
+    messagesHistory.push({
+      id: messagesHistory.length + 1,
+      sender: Role.Assistant,
+      name: 'Assistant',
+      text: response.messages!,
+      timestamp: new Date().toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }),
+    })
+  } catch (error) {
+    console.error(error)
+  }
+  messageUser.value = ''
 }
 
 const reverseOrderMessages = computed(() => {
-  return props.messages.slice().reverse()
+  return messagesHistory.slice().reverse()
 })
 
-// connection.on('ReceiveMessage', (message: Message) => {
-//   props.messages.push(message)
-// })
+const registryChat: InitChatResponse = reactive({
+  guid: '',
+  name: '',
+  messages: [],
+})
 
-onBeforeMount(() => {
-  initConnectionBot()
+onBeforeMount(async () => {
+  try {
+    const response = await fetch('http://localhost:5000/api/v1/chat?chatName=chatbot', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+    registryChat.guid = data.guid
+    registryChat.name = data.name
+    registryChat.messages = data.messages
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+onMounted(() => {
+  console.log(registryChat)
 })
 </script>
 
@@ -113,8 +166,8 @@ onBeforeMount(() => {
       <template v-for="message in reverseOrderMessages" :key="message.id">
         <speech-bubble
           :class="{
-            'ai-self-end': message.sender === MessageType.User,
-            'ai-self-start': message.sender === MessageType.System,
+            'ai-self-end': message.sender === Role.User,
+            'ai-self-start': message.sender === Role.Assistant,
           }"
           :message="message"
         />
@@ -126,7 +179,7 @@ onBeforeMount(() => {
         aria-label="Enter your question for the bot"
         placeholder="Message ..."
         class="ai-flex-grow ai-p-2 ai-border ai-border-gray-300 ai-rounded-md ai-bg-gray-50"
-        v-model="message"
+        v-model="messageUser"
         @keyup.enter="sendMessage"
       />
       <button
@@ -141,22 +194,22 @@ onBeforeMount(() => {
 </template>
 
 <style scoped>
-.chat-main::-webkit-scrollbar {
+.ai-chat-main::-webkit-scrollbar {
   width: 20px; /* Scrollbar width */
 }
 
-.chat-main::-webkit-scrollbar-track {
+.ai-chat-main::-webkit-scrollbar-track {
   background-color: transparent; /* Scrollbar track color */
 }
 
-.chat-main::-webkit-scrollbar-thumb {
+.ai-chat-main::-webkit-scrollbar-thumb {
   background-color: #d6dee1;
   border-radius: 20px;
   border: 6px solid transparent;
   background-clip: content-box;
 }
 
-.chat-main::-webkit-scrollbar-thumb:hover {
+.ai-chat-main::-webkit-scrollbar-thumb:hover {
   background-color: #4a90e2;
 }
 </style>

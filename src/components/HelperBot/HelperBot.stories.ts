@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { action } from '@storybook/addon-actions'
 import HelperBot from './HelperBot.vue'
-import { MessageType } from '@/components/HelperBot/components/types'
+import { Role } from '@/components/HelperBot/components/types'
 
 const meta: Meta<typeof HelperBot> = {
   title: 'Components/Utils/HelperBot',
@@ -56,7 +56,7 @@ export const Default: Story = {
     messages: [
       {
         id: 1,
-        sender: MessageType.System,
+        sender: Role.Assistant,
         name: 'Helper AI',
         text: 'Hello, how can I help you?',
         timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -67,7 +67,7 @@ export const Default: Story = {
       },
       {
         id: 2,
-        sender: MessageType.User,
+        sender: Role.User,
         name: 'User',
         text: 'I need help with my order',
         timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -78,7 +78,7 @@ export const Default: Story = {
       },
       {
         id: 3,
-        sender: MessageType.System,
+        sender: Role.Assistant,
         name: 'Helper AI',
         text: 'Sure, what is your order number?',
         timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -89,7 +89,7 @@ export const Default: Story = {
       },
       {
         id: 4,
-        sender: MessageType.System,
+        sender: Role.Assistant,
         name: 'Helper AI',
         text: 'Sure, what is your order number?',
         timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -100,7 +100,7 @@ export const Default: Story = {
       },
       {
         id: 5,
-        sender: MessageType.System,
+        sender: Role.Assistant,
         name: 'Helper AI',
         text: 'Sure, what is your order number?',
         timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -111,7 +111,7 @@ export const Default: Story = {
       },
       {
         id: 6,
-        sender: MessageType.User,
+        sender: Role.User,
         name: 'User',
         text: 'Sure, what is your order number? pcvsdbsd sd pjbsdv ipj sdvv sdvb pb sdvp vasdpb pvsd ipsdfv',
         timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -122,7 +122,7 @@ export const Default: Story = {
       },
       {
         id: 7,
-        sender: MessageType.System,
+        sender: Role.Assistant,
         name: 'Helper AI',
         text: 'Sure, what is your order number?',
         timestamp: new Date().toLocaleTimeString('en-GB', {

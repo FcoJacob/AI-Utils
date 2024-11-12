@@ -1,13 +1,13 @@
-import { it, expect } from 'vitest'
+import { it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/vue'
 import HelperBot from './HelperBot.vue'
 import { userEvent } from '@testing-library/user-event'
-import { MessageType } from './components/types'
+import { Role } from './components/types'
 
 const messages = [
   {
     id: 1,
-    sender: MessageType.System,
+    sender: Role.Assistant,
     name: 'Helper AI',
     text: 'Hello, how can I help you?',
     timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -18,7 +18,7 @@ const messages = [
   },
   {
     id: 2,
-    sender: MessageType.User,
+    sender: Role.User,
     name: 'User',
     text: 'I need help with my order',
     timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -29,7 +29,7 @@ const messages = [
   },
   {
     id: 3,
-    sender: MessageType.System,
+    sender: Role.Assistant,
     name: 'Helper AI',
     text: 'Sure, what is your order number?',
     timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -40,7 +40,7 @@ const messages = [
   },
   {
     id: 4,
-    sender: MessageType.System,
+    sender: Role.Assistant,
     name: 'Helper AI',
     text: 'Sure, what is your order number?',
     timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -51,7 +51,7 @@ const messages = [
   },
   {
     id: 5,
-    sender: MessageType.System,
+    sender: Role.Assistant,
     name: 'Helper AI',
     text: 'Sure, what is your order number?',
     timestamp: new Date().toLocaleTimeString('en-GB', {
@@ -62,9 +62,9 @@ const messages = [
   },
   {
     id: 6,
-    sender: MessageType.User,
+    sender: Role.User,
     name: 'User',
-    text: 'Sure, what is your order number? pcvsdbsd sd pjbsdv ipj sdvv sdvb pb sdvp vasdpb pvsd ipsdfv',
+    text: 'Sure, what is your order number?',
     timestamp: new Date().toLocaleTimeString('en-GB', {
       hour: '2-digit',
       minute: '2-digit',
@@ -73,7 +73,7 @@ const messages = [
   },
   {
     id: 7,
-    sender: MessageType.System,
+    sender: Role.Assistant,
     name: 'Helper AI',
     text: 'Sure, what is your order number?',
     timestamp: new Date().toLocaleTimeString('en-GB', {

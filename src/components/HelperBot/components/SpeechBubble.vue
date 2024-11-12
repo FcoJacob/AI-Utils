@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Message, MessageType } from './types'
+import { type Message, Role } from './types'
 
 interface SpeechBlueProps {
   message: Message
@@ -13,8 +13,8 @@ defineProps<SpeechBlueProps>()
     <div
       class="ai-uppercase ai-font-semibold ai-text-sm"
       :class="{
-        'ai-self-end ai-mr-2': message.sender === MessageType.User,
-        'ai-self-start ai-ml-2': message.sender === MessageType.System,
+        'ai-self-end ai-mr-2': message.sender === Role.User,
+        'ai-self-start ai-ml-2': message.sender === Role.Assistant,
       }"
     >
       {{ message.name }}
@@ -22,8 +22,8 @@ defineProps<SpeechBlueProps>()
     <div
       class="ai-speech-bubble"
       :class="{
-        'ai-speech-bubble-user': message.sender === MessageType.User,
-        'ai-speech-bubble-system': message.sender === MessageType.System,
+        'ai-speech-bubble-user': message.sender === Role.User,
+        'ai-speech-bubble-system': message.sender === Role.Assistant,
       }"
     >
       <template v-if="message.loading">
@@ -40,8 +40,8 @@ defineProps<SpeechBlueProps>()
     <small
       class="ai-text-gray-400 ai-font-semibold"
       :class="{
-        'ai-self-end ai-mr-2': message.sender === MessageType.User,
-        'ai-self-start ai-ml-2': message.sender === MessageType.System,
+        'ai-self-end ai-mr-2': message.sender === Role.User,
+        'ai-self-start ai-ml-2': message.sender === Role.Assistant,
       }"
     >
       {{ message.timestamp }}
