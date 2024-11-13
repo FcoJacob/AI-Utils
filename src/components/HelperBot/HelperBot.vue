@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onMounted, ref, reactive } from 'vue'
+import { computed, onBeforeMount, ref, reactive, onBeforeUnmount } from 'vue'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import SvgIcon from '@jamescoyle/vue-icon'
@@ -40,19 +40,59 @@ withDefaults(defineProps<HelperBotProps>(), {
   withCloseButton: true,
 })
 
-const emit = defineEmits<{
-  (e: 'sendMessage', message: string): void
-}>()
-
 const isChatOpen = ref(false)
 
 const openChat = () => {
   isChatOpen.value = !isChatOpen.value
 }
 
+const registryChat: InitChatResponse = reactive({
+  chatId: '',
+  name: '',
+  messages: [],
+})
+
 const messagesHistory: Message[] = reactive([])
 
 const messageUser = ref('')
+
+const getResponse = async () => {
+  const actual = messagesHistory.length + 1
+  messagesHistory.push({
+    id: actual,
+    sender: Role.Assistant,
+    name: 'Assistant',
+    text: messageUser.value,
+    timestamp: new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+    loading: true,
+  })
+  try {
+    await fetch(
+      `http://localhost:5000/api/v1/chats/messages?chatId=${registryChat.chatId}&userInput=${messageUser.value}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chatId: registryChat.chatId,
+          message: messageUser.value,
+        }),
+      },
+    ).then(async (response) => {
+      const data: any = await response.json()
+      const lastMessage: Message = messagesHistory.find((message) => message.id === actual)!
+      lastMessage.loading = false
+      lastMessage.text = data.message
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 const sendMessage = async () => {
   messagesHistory.push({
@@ -66,34 +106,7 @@ const sendMessage = async () => {
       hour12: false,
     }),
   })
-  try {
-    const response = await fetch(
-      `http://localhost:5000/api/v1/chats/messages?chatId=${registryChat.guid}&userInput=${messageUser.value}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          guid: registryChat.guid,
-          message: messageUser.value,
-        }),
-      },
-    )
-    messagesHistory.push({
-      id: messagesHistory.length + 1,
-      sender: Role.Assistant,
-      name: 'Assistant',
-      text: response.messages!,
-      timestamp: new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }),
-    })
-  } catch (error) {
-    console.error(error)
-  }
+  await getResponse()
   messageUser.value = ''
 }
 
@@ -101,31 +114,29 @@ const reverseOrderMessages = computed(() => {
   return messagesHistory.slice().reverse()
 })
 
-const registryChat: InitChatResponse = reactive({
-  guid: '',
-  name: '',
-  messages: [],
-})
-
-onBeforeMount(async () => {
+const registryChatBot = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/v1/chat?chatName=chatbot', {
+    const response = await fetch('http://localhost:5000/api/v1/chats?chatName=chatbot', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
     })
     const data = await response.json()
-    registryChat.guid = data.guid
+    registryChat.chatId = data.id
     registryChat.name = data.name
     registryChat.messages = data.messages
   } catch (error) {
     console.error(error)
   }
+}
+
+onBeforeMount(async () => {
+  await registryChatBot()
 })
 
-onMounted(() => {
-  console.log(registryChat)
+onBeforeUnmount(() => {
+  Object.assign(messagesHistory, [])
 })
 </script>
 
@@ -134,7 +145,7 @@ onMounted(() => {
     <bender-image />
   </float-button>
   <div
-    v-if="isChatOpen"
+    v-show="isChatOpen"
     role="dialog"
     aria-label="Dialog with bot of helper"
     class="ai-bg-white ai-fixed ai-bottom-4 ai-right-20 ai-rounded-3xl ai-overflow-hidden ai-flex ai-flex-col ai-justify-start ai-w-[400px] ai-shadow-lg"

@@ -19,7 +19,7 @@ export type MessageResponse = {
 }
 
 export type InitChatResponse = {
-  guid: string
+  chatId: string
   name: string
   messages: MessageResponse[] | []
 }
