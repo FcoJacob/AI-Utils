@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { type Message, Role } from './types'
+import VueMarkdown from 'vue-markdown-render'
+import MarkdownItAnchor from 'markdown-it-anchor'
 
 interface SpeechBlueProps {
   message: Message
 }
 
 defineProps<SpeechBlueProps>()
+
+const plugins = [MarkdownItAnchor]
 </script>
 
 <template>
@@ -34,7 +38,7 @@ defineProps<SpeechBlueProps>()
         </div>
       </template>
       <template v-else>
-        {{ message.text }}
+        <vue-markdown :source="message.text" :plugins="plugins" />
       </template>
     </div>
     <small
