@@ -71,19 +71,15 @@ const getResponse = async () => {
     loading: true,
   })
   try {
-    await fetch(
-      `http://localhost:5000/api/v1/chats/messages?chatId=${registryChat.chatId}&userInput=${messageUser.value}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chatId: registryChat.chatId,
-          message: messageUser.value,
-        }),
+    await fetch(`http://localhost:5000/api/v1/chats/${registryChat.chatId}/messages`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    ).then(async (response) => {
+      body: JSON.stringify({
+        message: messageUser.value,
+      }),
+    }).then(async (response) => {
       const data: any = await response.json()
       const lastMessage: Message = messagesHistory.find((message) => message.id === actual)!
       lastMessage.loading = false
