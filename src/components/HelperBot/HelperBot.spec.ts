@@ -55,7 +55,7 @@ it('should show a title product for the chat bot', async () => {
 })
 
 it('should show a chat id for the chat bot', async () => {
-  render(HelperBot, { props: { chatId: 123456 } })
+  render(HelperBot)
 
   await openChatBot()
 

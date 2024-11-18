@@ -45,7 +45,6 @@ export const Default: Story = {
   args: {
     titleBot: 'Helper Bot',
     titleProduct: 'Sima Suite',
-    chatId: 123456,
     withCloseButton: true,
     withAvatar: true,
   },
