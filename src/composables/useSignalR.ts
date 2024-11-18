@@ -1,4 +1,5 @@
 import { type HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
+import { ref } from 'vue'
 
 let connection: HubConnection
 export const useSignalR = () => {
@@ -11,3 +12,5 @@ export const useSignalR = () => {
     connect,
   }
 }
+
+export const baseURL = ref('')

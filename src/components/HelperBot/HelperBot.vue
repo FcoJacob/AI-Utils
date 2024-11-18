@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, reactive, onBeforeUnmount } from 'vue'
+import { computed, onBeforeMount, ref, reactive, onBeforeUnmount, onMounted } from 'vue'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import SvgIcon from '@jamescoyle/vue-icon'
@@ -8,6 +8,7 @@ import FloatButton from './components/FloatButton.vue'
 import BenderImage from './components/icons/BenderImage.vue'
 import SpeechBubble from './components/SpeechBubble.vue'
 import { type InitChatResponse, type Message, Role } from './components/types'
+import { baseURL } from '@/composables/useSignalR'
 
 type HelperBotProps = {
   /**
@@ -18,10 +19,6 @@ type HelperBotProps = {
    * Title of the product that the bot is helping with
    */
   titleProduct?: string
-  /**
-   * Chat ID of the conversation
-   */
-  chatId?: number
   /**
    * If the chat has a close button
    */
@@ -71,7 +68,7 @@ const getResponse = async () => {
     loading: true,
   })
   try {
-    await fetch(`http://localhost:5000/api/v1/chats/${registryChat.chatId}/messages`, {
+    await fetch(`${baseURL.value}/api/v1/chats/${registryChat.chatId}/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +77,7 @@ const getResponse = async () => {
         message: messageUser.value,
       }),
     }).then(async (response) => {
-      const data: any = await response.json()
+      const data = await response.json()
       const lastMessage: Message = messagesHistory.find((message) => message.id === actual)!
       lastMessage.loading = false
       lastMessage.text = data.message
@@ -112,7 +109,7 @@ const reverseOrderMessages = computed(() => {
 
 const registryChatBot = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/v1/chats?chatName=chatbot', {
+    const response = await fetch(`${baseURL.value}/api/v1/chats?chatName=chatbot`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -127,12 +124,30 @@ const registryChatBot = async () => {
   }
 }
 
+const copyURL = async (id: string) => {
+  try {
+    await navigator.clipboard.writeText(id)
+    alert('id Copied')
+  } catch (error) {
+    console.log('Cannot copy', error)
+  }
+}
+
+const setSessionStorage = () => {
+  sessionStorage.setItem('chatId', registryChat.chatId)
+}
+
 onBeforeMount(async () => {
   await registryChatBot()
 })
 
+onMounted(() => {
+  setSessionStorage()
+})
+
 onBeforeUnmount(() => {
   Object.assign(messagesHistory, [])
+  // sessionStorage.removeItem('chatId')
 })
 </script>
 
@@ -162,7 +177,10 @@ onBeforeUnmount(() => {
         <div class="ai-flex ai-flex-col ai-justify-center ai-items-start ai-flex-grow ai-gap-0">
           <h4 class="ai-font-semibold ai-text-lg">{{ titleProduct }}</h4>
           <small class="ai-font-semibold">
-            CHAT ID: <span class="ai-text-blue-300 ai-cursor-copy">{{ chatId }}</span>
+            CHAT ID:
+            <span class="ai-text-blue-300 ai-cursor-copy" @click="copyURL(registryChat.chatId)">
+              {{ registryChat.chatId.split('-')[0].toUpperCase() }}</span
+            >
           </small>
         </div>
       </div>
